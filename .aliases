@@ -1,0 +1,14 @@
+# ─── Dev ──────────────────────────────────────────────────
+alias dev="pnpm dev"
+alias build="pnpm build"
+alias lint="pnpm lint"
+alias start="pnpm start"
+
+# ─── Navigation ───────────────────────────────────────────
+alias ..="cd .."
+alias ...="cd ../.."
+alias lsa="ls -la"
+
+# ─── Quick edits ──────────────────────────────────────────
+alias zshrc="code ~/.zshrc"
+alias aliases="code ~/.aliases"

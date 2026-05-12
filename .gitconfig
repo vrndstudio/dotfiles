@@ -1,0 +1,26 @@
+[core]
+  editor = code --wait
+  autocrlf = input
+
+[init]
+  defaultBranch = main
+
+[pull]
+  rebase = true
+
+[alias]
+  co = checkout
+  br = branch
+  st = status
+  s = status -s
+  c = commit
+	cl = clone
+	cm = commit -m
+  l = log --graph --all --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ <%cn>" --decorate
+	lg = log --color --graph --pretty=format:'%C(bold white)%h%Creset -%C(bold red)%d%Creset %s %C(blue)<%an>%Creset %C(green)(%cr)%Creset %cd ' --abbrev-commit --date=format:'%a %d %b %y %H:%M'
+	llg = log --color --graph --pretty=format:'%C(bold white)%H %d%Creset%n%s%n%+b%C(bold blue)%an <%ae>%Creset %C(bold green)%cr (%ci)' --abbrev-commit
+  sl = stash list
+	sa = stash apply
+	ss = stash save
