@@ -31,7 +31,9 @@ sudo apt-get install -y -qq \
   ripgrep \
   fzf \
   jq \
-  tmux
+  tmux \
+  bubblewrap \
+  socat
 
 echo "==> Configuring npm for user-global installs"
 mkdir -p "$HOME/.local"
@@ -90,8 +92,21 @@ copy_dotfile() {
   install -m 0644 "$src" "$dst"
 }
 
-echo "==> Merging .gitconfig (preserving cloud-init's [user])"
-merge_append "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
+copy_script() {
+  local src="$1" dst="$2"
+  [ -f "$src" ] || return 0
+  install -m 0755 "$src" "$dst"
+}
+
+copy_dir() {
+  local src="$1" dst="$2"
+  [ -d "$src" ] || return 0
+  mkdir -p "$dst"
+  cp -r "$src"/. "$dst"/
+}
+
+echo "==> Copying .gitconfig (identity set separately by set-git-identity.sh)"
+copy_dotfile "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
 
 echo "==> Merging .zshrc (preserving cloud-init's defaults)"
 merge_append "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
@@ -103,9 +118,17 @@ echo "==> Copying user-level Claude Code config"
 mkdir -p "$HOME/.claude"
 copy_dotfile "$DOTFILES_DIR/.claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 copy_dotfile "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"
+copy_dotfile "$DOTFILES_DIR/.mcp.json" "$HOME/.mcp.json"
+copy_script "$DOTFILES_DIR/.claude/statusline.sh" "$HOME/.claude/statusline.sh"
+copy_dir "$DOTFILES_DIR/.claude/commands" "$HOME/.claude/commands"
+copy_dir "$DOTFILES_DIR/.claude/templates" "$HOME/.claude/templates"
 
-echo "==> Installing get-shit-done (Claude global skill)"
-npx -y get-shit-done-cc@latest --claude --global
+if [[ "${INSTALL_GSD:-0}" == "1" ]]; then
+  echo "==> Installing get-shit-done (Claude global skill)"
+  npx -y get-shit-done-cc@latest --claude --global
+else
+  echo "==> Skipping get-shit-done install (set INSTALL_GSD=1 to enable)"
+fi
 
 echo "==> Setting zsh as login shell"
 zsh_path="$(command -v zsh)"
@@ -126,9 +149,8 @@ echo
 echo "Open a new shell (zsh) or run: exec zsh -l"
 echo
 echo "For private-repo clones from this droplet, paste a short-lived fine-grained PAT:"
-echo "  read -s GH_TOKEN          # paste, Enter — nothing echoed, nothing in history"
-echo "  git clone "https://x-access-token:$GH_TOKEN@github.com/<you>/<repo>.git"
-
-echo "  cd <repo> && git remote set-url origin https://github.com/<you>/<repo>.git"
-echo "  unset GH_TOKEN"
+echo '  read -s GH_TOKEN          # paste, Enter — nothing echoed, nothing in history'
+echo '  git clone "https://x-access-token:$GH_TOKEN@github.com/<you>/<repo>.git"'
+echo '  cd <repo> && git remote set-url origin https://github.com/<you>/<repo>.git'
+echo '  unset GH_TOKEN'
 
