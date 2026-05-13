@@ -67,7 +67,7 @@ done
 # bracket our additions with these markers so re-runs replace only our
 # block and leave cloud-init's preamble alone.
 MARK_BEGIN="# >>> dotfiles bootstrap >>>"
-MARK_END="# <<< dotfiles bootstrap <<<"
+MARK_END=" # <<< dotfiles bootstrap <<<"
 
 merge_append() {
   local src="$1" dst="$2"
@@ -127,6 +127,8 @@ echo "Open a new shell (zsh) or run: exec zsh -l"
 echo
 echo "For private-repo clones from this droplet, paste a short-lived fine-grained PAT:"
 echo "  read -s GH_TOKEN          # paste, Enter — nothing echoed, nothing in history"
-echo "  git clone https://x-access-token:\${GH_TOKEN}@github.com/<you>/<repo>.git"
+echo "  git clone "https://x-access-token:$GH_TOKEN@github.com/<you>/<repo>.git"
+
 echo "  cd <repo> && git remote set-url origin https://github.com/<you>/<repo>.git"
 echo "  unset GH_TOKEN"
+
