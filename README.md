@@ -4,8 +4,8 @@ These are user level configs, installed at `$HOME` dir level. for project level 
 
 ## Installation / Usage
 
-This repo is meant for use with Trail of Bits' dropkit setup. 
-Follow setup steps there
+This repo is meant for use with [Trail of Bits' Dropkit](https://github.com/trailofbits/dropkit) setup. 
+Follow setup steps there. After `ssh dropkit.<droplet-name>`:
 
 ### Download repo
 
