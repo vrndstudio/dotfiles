@@ -36,6 +36,19 @@ Reference incidents: RoguePilot (Orca, Feb 2026), Comment-and-Control (Aonan Gua
 | Editor          | VS Code Remote-SSH                                            | Edit droplet filesystem locally                                    |
 | Project config  | Repo `CLAUDE.md` + `.claude/settings.json`                    | Via a template or existing repo via `git clone`                                           |
 
+## Repo layout
+
+- `install.sh` — bootstrap (apt + npm + oh-my-zsh + dotfiles); idempotent via marker-block merge for `.zshrc`. `INSTALL_GSD=1` adds get-shit-done.
+- `set-git-identity.sh` — interactive prompt for `user.name` / `user.email`. Does **not** touch `EXA_API_KEY`.
+- `.gitconfig` — aliases + editor + `pull.rebase`; no identity (set separately).
+- `.zshrc` / `.aliases` — agnoster theme, oh-my-zsh plugins, fzf bindings, pnpm dev aliases.
+- `.mcp.json` — context7 + exa servers. **Exa key is a placeholder**; `settings.local.json` disables exa until set.
+- `.claude/CLAUDE.md` — global dev standards (Python/Node/Rust/Bash tooling, hard limits, testing policy). Applies to every project on the droplet.
+- `.claude/settings.json` — model + sandbox + permission allow/deny/ask + hooks (blocks `rm -rf`, force-push to main).
+- `.claude/statusline.sh` — custom statusline (model, branch, cost, context%, cache hit, progress bar).
+- `.claude/commands/` — 7 slash commands: `code-review`, `fix-issue`, `review-pr`, `security-check`, `test`, `update-docs`, `update-while-working`.
+- `.claude/templates/` — project-level templates (currently: `typescript-node-claude.md`).
+
 ## Credentials
 - **DigitalOcean API token**: 90-day, custom scopes (23 from dropkit README), not Full Access.
 - **SSH key**: existing GitHub ed25519, registered with DigitalOcean during `dropkit init`. Lets the laptop SSH *into* droplets; grants droplets **no** GitHub access.
@@ -68,7 +81,7 @@ Reference incidents: RoguePilot (Orca, Feb 2026), Comment-and-Control (Aonan Gua
 - [x] install `.mcp.json` to `~/.claude/.mcp.json`
 
 ### Open
-- [ ] add step to delete cloned `dotfiles` repo once done? 
 - [ ] improve `README.md`
+- [ ] add step to delete cloned `dotfiles` repo once done? 
 - [ ] `.mcp.json` has `EXA_API_KEY` placeholder — wire to env var or prompt in `set-git-identity.sh`
 - [ ] add `shellcheck` / `shfmt` to install or as a prek hook (CLAUDE.md mandates them)

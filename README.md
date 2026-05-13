@@ -6,12 +6,17 @@ This starter copies user configs & preferred tools to the root of a Digital Ocea
 
 Follow [dropkit setup steps](https://github.com/trailofbits/dropkit#installation). 
 
+Recommended settings for new droplets:
+
+```
+Size:       s-1vcpu-2gb
+Image:      ubuntu-25-10-x64
+```
 ### Workflow
 
 ```bash
 dropkit create <name>
 ssh dropkit.<name>
-git clone https://github.com/<you>/dotfiles.git && cd dotfiles && bash install.sh
 # ... work ...
 dropkit hibernate <name>   # pause billing
 dropkit wake <name>        # resume
@@ -36,17 +41,36 @@ cd dropkit-starter-cc
 bash install.sh
 ```
 
-installs [xyz]
+shorthand:
+
+```shell
+git clone https://github.com/<you>/dropkit-starter-cc.git && cd dropkit-starter-cc && bash install.sh
+```
+
+Installs:
+- System: `nodejs`, `npm`, `ripgrep`, `fzf`, `jq`, `tmux`, `bubblewrap`, `socat`
+- Node global: `@anthropic-ai/claude-code`, corepack (pnpm/yarn on demand)
+- Shell: oh-my-zsh + `zsh-autosuggestions` + `zsh-syntax-highlighting`; sets zsh as login shell
+- Dotfiles: `.gitconfig`, `.aliases`, `.zshrc` (merged — preserves cloud-init defaults, re-runs are safe)
+- Claude Code: `~/.claude/{CLAUDE.md, settings.json, statusline.sh, commands/, templates/}` + `~/.mcp.json`
+
+Optional: `INSTALL_GSD=1 bash install.sh` also installs the [get-shit-done](https://github.com/JamesAndresen/get-shit-done) skill pack.
 
 ### Set git identity
 
-Run after install
+Run before your first commit.
 
 ```shell
 bash set-git-identity.sh
 ```
 
+### Set Exa API key (optional)
+
+`.mcp.json` ships with an `EXA_API_KEY` placeholder and `settings.local.json` keeps the exa MCP server disabled until you replace it. Skip if you don't need Exa search.
+
 ## Usage
+
+Start a new repo or clone one
 
 ### SSH Git Cloning
 
