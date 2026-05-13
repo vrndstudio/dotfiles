@@ -1,5 +1,6 @@
 {
   "model": "opus",
+  "effort": "high",
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": false
@@ -20,15 +21,15 @@
       "Bash(cp *)",
       "Bash(mv *)",
       "Bash(rm *)",
-      "Bash(git log *)",
-      "Bash(git status *)",
-      "Bash(git diff *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git branch *)",
-      "Bash(git checkout *)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git status:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git tag:*)",
+      "Bash(git fetch:*)",
+      "Bash(git config:*)",
       "Bash(git switch *)",
-      "Bash(git stash *)",
       "Bash(pnpm add *)",
       "Bash(pnpm remove *)",
       "Bash(pnpm run *)",
@@ -53,9 +54,17 @@
       "Write(**/node_modules/**)",
       "Bash(rm -rf *)",
       "Bash(rm -r *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git branch -D *)",
+      "Bash(git checkout *)",
+      "Bash(git merge *)",
+      "Bash(git branch *)"
     ]
   },
   "env": {
+    "CLAUDE_CODE_NO_FLICKER": "1",
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "DISABLE_TELEMETRY": "1",
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
