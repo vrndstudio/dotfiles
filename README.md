@@ -33,6 +33,8 @@ dropkit on <droplet>
 ```
 
 ### Clone this starter
+Most dotfiles and defaults in this repo draw from Trail of Bit's [claude-code-config](https://github.com/trailofbits/claude-code-config/tree/main). 
+
 Once entered `ssh dropkit.<droplet>`, clone this template repo or adapt yours.
 
 ```shell
