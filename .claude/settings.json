@@ -19,6 +19,10 @@
     "BASH_DEFAULT_TIMEOUT_MS": "30000",
     "NODE_ENV": "development"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"~/.claude/statusline.sh\""
+  },
   "permissions": {
     "allowedTools": ["Read", "Write"],
     "allow": [
