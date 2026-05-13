@@ -6,7 +6,19 @@ This starter copies user configs & preferred tools to the root of a Digital Ocea
 
 Follow [dropkit setup steps](https://github.com/trailofbits/dropkit#installation). 
 
-useful commands
+### Workflow
+
+```bash
+dropkit create <name>
+ssh dropkit.<name>
+git clone https://github.com/<you>/dotfiles.git && cd dotfiles && bash install.sh
+# ... work ...
+dropkit hibernate <name>   # pause billing
+dropkit wake <name>        # resume
+dropkit destroy <name>     # done
+```
+
+### Troubleshooting
 
 ```shell
 tailscale status
@@ -15,9 +27,8 @@ dropkit off <droplet>    # if ip address differs from tailscale's
 dropkit on <droplet>
 ```
 
-Once entered `ssh dropkit.<droplet>`, clone this template repo or adapt yours:
-
 ### Clone this starter
+Once entered `ssh dropkit.<droplet>`, clone this template repo or adapt yours.
 
 ```shell
 git clone https://github.com/vrndstudio/dropkit-starter-cc
