@@ -1,9 +1,23 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 365,
+  "enableAllProjectMcpServers": false,
+  "alwaysThinkingEnabled": false,
   "model": "opus",
   "effort": "high",
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": false
+  },
+  "theme": "dark-ansi",
+  "env": {
+    "CLAUDE_CODE_NO_FLICKER": "1",
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "DISABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "DISABLE_FEEDBACK_COMMAND": "1",
+    "BASH_DEFAULT_TIMEOUT_MS": "30000",
+    "NODE_ENV": "development"
   },
   "permissions": {
     "allowedTools": ["Read", "Write"],
@@ -21,6 +35,7 @@
       "Bash(cp *)",
       "Bash(mv *)",
       "Bash(rm *)",
+
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git status:*)",
@@ -30,6 +45,7 @@
       "Bash(git fetch:*)",
       "Bash(git config:*)",
       "Bash(git switch *)",
+
       "Bash(pnpm add *)",
       "Bash(pnpm remove *)",
       "Bash(pnpm run *)",
@@ -37,6 +53,15 @@
       "Bash(npx *)"
     ],
     "deny": [
+      "Write(production.*)",
+      "Write(**/node_modules/**)",
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(rm -r *)",
+      "Bash(sudo *)",
+      "Bash(mkfs *)",
+      "Bash(dd *)",
+
       "Read(**/.env*)",
       "Write(**/.env*)",
       "Read(**/*secret*)",
@@ -50,10 +75,33 @@
       "Read(**/*.key)",
       "Write(**/*.key)",
       "Write(/mnt/c/*)",
-      "Write(production.*)",
-      "Write(**/node_modules/**)",
-      "Bash(rm -rf *)",
-      "Bash(rm -r *)"
+      "Bash(wget *|bash*)",
+      "Bash(wget *| bash*)",
+      "Edit(~/.bashrc)",
+      "Edit(~/.zshrc)",
+      "Edit(~/.ssh/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.azure/**)",
+      "Read(~/.config/gh/**)",
+      "Read(~/.git-credentials)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.kube/**)",
+      "Read(~/.npmrc)",
+      "Read(~/.npm/**)",
+      "Read(~/.pypirc)",
+      "Read(~/.gem/credentials)",
+      "Read(~/Library/Keychains/**)",
+      "Read(~/Library/Application Support/**/metamask*/**)",
+      "Read(~/Library/Application Support/**/electrum*/**)",
+      "Read(~/Library/Application Support/**/exodus*/**)",
+      "Read(~/Library/Application Support/**/phantom*/**)",
+      "Read(~/Library/Application Support/**/solflare*/**)",
+
+      "Bash(git push --force*)",
+      "Bash(git push *--force*)",
+      "Bash(git reset --hard*)"
     ],
     "ask": [
       "Bash(git push *)",
@@ -63,13 +111,22 @@
       "Bash(git branch *)"
     ]
   },
-  "env": {
-    "CLAUDE_CODE_NO_FLICKER": "1",
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "DISABLE_TELEMETRY": "1",
-    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
-    "DISABLE_FEEDBACK_COMMAND": "1",
-    "BASH_DEFAULT_TIMEOUT_MS": "30000",
-    "NODE_ENV": "development"
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(jq -r '.tool_input.command'); if echo \"$CMD\" | grep -qiE '(^|;[[:space:]]*|&&[[:space:]]*|[|][|][[:space:]]*|[|][[:space:]]*)rm[[:space:]]' && echo \"$CMD\" | grep -qiE '(^|[[:space:]])-[a-zA-Z]*[rR]|--recursive' && echo \"$CMD\" | grep -qiE '(^|[[:space:]])-[a-zA-Z]*[fF]|--force'; then echo 'BLOCKED: Use trash instead of rm -rf' >&2; exit 2; fi"
+          },
+          {
+            "type": "command",
+            "command": "CMD=$(jq -r '.tool_input.command'); if echo \"$CMD\" | grep -qE 'git[[:space:]]+push.*(main|master)'; then echo 'BLOCKED: Use feature branches, not direct push to main' >&2; exit 2; fi"
+          }
+        ]
+      }
+    ]
   }
 }
