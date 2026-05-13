@@ -15,15 +15,9 @@ dropkit off <droplet>    # if ip address differs from tailscale's
 dropkit on <droplet>
 ```
 
-After 
+Once entered `ssh dropkit.<droplet>`, clone this template repo or adapt yours:
 
-```shell
-ssh dropkit.<droplet>
-```
-
-download this template repo / a repurposed one.
-
-### Download repo
+### Clone this starter
 
 ```shell
 git clone https://github.com/vrndstudio/dropkit-starter-cc
