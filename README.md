@@ -6,11 +6,11 @@ This starter copies user configs & preferred tools to the root of a Digital Ocea
 
 Follow [dropkit setup steps](https://github.com/trailofbits/dropkit#installation). 
 
-Recommended settings for new droplets:
+Recommended minimum settings for new droplets:
 
 ```
-Size:       s-1vcpu-2gb
-Image:      ubuntu-25-10-x64
+Size:       s-2vcpu-4gb
+Image:      ubuntu-24-04-x64             # supported til 2029
 ```
 ### Workflow
 
@@ -30,6 +30,7 @@ tailscale status
 tailscale ping <droplet>
 dropkit off <droplet>    # if ip address differs from tailscale's
 dropkit on <droplet>
+dropkit enable-tailscale <droplet>
 ```
 
 ### Clone this starter
@@ -38,7 +39,7 @@ Most dotfiles and defaults in this repo draw from Trail of Bit's [claude-code-co
 Once entered `ssh dropkit.<droplet>`, clone this template repo or adapt yours.
 
 ```shell
-git clone https://github.com/vrndstudio/dropkit-starter-cc
+git clone https://github.com/vrndstudio/dropkit-starter-cc.git
 cd dropkit-starter-cc
 bash install.sh
 ```
@@ -46,7 +47,7 @@ bash install.sh
 shorthand:
 
 ```shell
-git clone https://github.com/<you>/dropkit-starter-cc.git && cd dropkit-starter-cc && bash install.sh
+git clone https://github.com/vrndstudio/dropkit-starter-cc.git && cd dropkit-starter-cc && bash install.sh
 ```
 
 Installs:
@@ -87,4 +88,10 @@ git remote set-url origin https://github.com/you/repo.git   # strip token from s
 unset GH_TOKEN
 ```
 
+## Development 
+
+### Next Steps
+
+- [ ] Test against threats (described in [CLAUDE.md](./CLAUDE.md))
+- [ ] add step to delete this starter once `install.sh` is complete? 
 
