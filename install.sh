@@ -26,25 +26,36 @@ sudo apt-get update -qq
 echo "==> Installing system packages"
 # git, curl, zsh, ca-certificates already provided by dropkit's cloud-init.
 sudo apt-get install -y -qq \
-  nodejs \
-  npm \
   ripgrep \
   fzf \
   jq \
   tmux \
   bubblewrap \
-  socat
+  socat \
+  unzip
 
-echo "==> Configuring npm for user-global installs"
-mkdir -p "$HOME/.local"
-npm config set prefix "$HOME/.local"
-export PATH="$HOME/.local/bin:$PATH"
+echo "==> Installing nvm + Node 22 LTS (Jod) as default"
+export NVM_DIR="$HOME/.nvm"
+if [ ! -s "$NVM_DIR/nvm.sh" ]; then
+  curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+fi
+# shellcheck disable=SC1091
+\. "$NVM_DIR/nvm.sh"
+nvm install --lts=jod
+nvm alias default lts/jod
+nvm use default
 
 echo "==> Installing Claude Code"
 npm install -g @anthropic-ai/claude-code
 
-echo "==> Enabling corepack (pnpm/yarn on demand)"
-sudo corepack enable
+echo "==> Installing pnpm + npm-check-updates"
+npm install -g pnpm npm-check-updates
+
+echo "==> Installing bun"
+if [ ! -x "$HOME/.bun/bin/bun" ]; then
+  curl -fsSL https://bun.sh/install | bash
+fi
+export PATH="$HOME/.bun/bin:$PATH"
 
 echo "==> Installing oh-my-zsh (unattended, keeping our own .zshrc)"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
@@ -139,9 +150,13 @@ fi
 
 echo "==> Done."
 echo
-echo "Verify:"
+echo "Verify (open a new shell first so nvm + bun are on PATH):"
+echo "  nvm --version"
+echo "  node --version              # expect v22.x (lts/jod)"
+echo "  pnpm --version"
+echo "  bun --version"
+echo "  ncu --version"
 echo "  claude --version"
-echo "  node --version"
 echo "  rg --version"
 echo "  echo \$SHELL                # expect /usr/bin/zsh after next login"
 echo "  grep -A1 'dotfiles' ~/.gitconfig | head -20"

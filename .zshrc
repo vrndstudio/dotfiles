@@ -1,6 +1,4 @@
 # ─── Environment ──────────────────────────────────────────
-export LANG="en_GB.UTF-8"
-export LC_ALL="en_GB.UTF-8"
 export EDITOR="nvim"
 
 alias vim="nvim"
@@ -26,4 +24,12 @@ source $ZSH/oh-my-zsh.sh
 # fzf integration (after the other env vars):
 [ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
 [ -f /usr/share/doc/fzf/examples/completion.zsh ]   && source /usr/share/doc/fzf/examples/completion.zsh
- 
+
+# ─── nvm (loads default Node version on every shell) ──────
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# ─── bun ──────────────────────────────────────────────────
+export BUN_INSTALL="$HOME/.bun"
+[ -d "$BUN_INSTALL/bin" ] && export PATH="$BUN_INSTALL/bin:$PATH"

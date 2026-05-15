@@ -87,11 +87,13 @@ Reference incidents: RoguePilot (Orca, Feb 2026), Comment-and-Control (Aonan Gua
 - [x] copy `./statusline.sh` to `~/.claude/`
 - [x] copy `.gitconfig` directly (identity set by `set-git-identity.sh`)
 - [x] install `.mcp.json` to `~/.claude/.mcp.json`
+- [x] install Node 22 LTS via nvm (default alias, auto-activates in new shells via `.zshrc` init)
+- [x] install `pnpm`, `npm-check-updates`, `bun`
+- [x] bootstrap template repo at `~/code/template-repo/` with project-scoped `.claude/settings.json`, commands subset, `CLAUDE.md` placeholder, `.gitignore`, `.editorconfig`, plugin install doc
 
 ### Open
 #### Urgent
-- [ ] fix errors encountered in last droplet (see bellow)
-- [ ] create spec for separate template repo to clone within the droplet (e.g. in `~/code/`) to start a new project. needs to contain `./claude/settings.json` derived from this codebase's one. think of what other bare bones we'd need for a next.js project without being precriptive.
+_(none — last urgent batch landed)_
 
 #### Later
 - [ ] improve `README.md`
@@ -102,20 +104,10 @@ Reference incidents: RoguePilot (Orca, Feb 2026), Comment-and-Control (Aonan Gua
 
 ## Errors encountered while using latest droplet
 
-### Improve `install.sh`
-which we wanna fix in next install.sh iterations or other bash scripts. 
-
-- need to use node 22.13 minimum to install and use `pnpm`
-- `npm install -g pnpm`
-- then can install `node_modules` of codebase with `pnpm`
-
-### Project-scoped `.claude/settings.json`
-claude in repo without its own settings json asks to edit without even suggesting to allow for this session. plan a template for project-scoped `.claude/settings.json` derived from use user-level ones (this repo's `./.claude/settings.json)`. It should minimise interuptions while respecting our threat model / use case. 
-
-### add packages
-- npm-check-updates
-- nvm
-- bun
+### Resolved
+- Node 22.13+ required for `pnpm` → install.sh now uses nvm + lts/jod (Node 22).
+- `pnpm`, `npm-check-updates`, `bun` → all installed by install.sh.
+- Project-scoped `.claude/settings.json` → shipped via template repo at `~/code/template-repo/`.
 
 ### Droplet size too small
 
