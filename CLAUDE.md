@@ -68,6 +68,14 @@ Reference incidents: RoguePilot (Orca, Feb 2026), Comment-and-Control (Aonan Gua
 - Repo `.claude/settings.json` deny block (`Bash(curl:*)`, `WebFetch`, `Read(**/.env*)`)
 - User `~/.claude/settings.json` personal hardening overlay
 
+## References
+
+- [trailofbits/dropkit](https://github.com/trailofbits/dropkit)
+- [Claude Code settings](https://docs.claude.com/en/docs/claude-code/settings) · [memory](https://docs.claude.com/en/docs/claude-code/memory)
+- [VS Code Remote-SSH](https://code.visualstudio.com/docs/remote/ssh)
+- [Tailscale + other VPNs](https://tailscale.com/kb/1105/other-vpns)
+- [DO API token scopes](https://docs.digitalocean.com/reference/api/scopes/)
+
 ## Next Steps
 
 ### Done
@@ -81,7 +89,64 @@ Reference incidents: RoguePilot (Orca, Feb 2026), Comment-and-Control (Aonan Gua
 - [x] install `.mcp.json` to `~/.claude/.mcp.json`
 
 ### Open
+#### Urgent
+- [ ] fix errors encountered in last droplet (see bellow)
+- [ ] create spec for separate template repo to clone within the droplet (e.g. in `~/code/`) to start a new project. needs to contain `./claude/settings.json` derived from this codebase's one. think of what other bare bones we'd need for a next.js project without being precriptive.
+
+#### Later
 - [ ] improve `README.md`
-- [ ] add step to delete cloned `dotfiles` repo once done? 
+- [ ] add step to delete cloned `dropkit-starter-cc` repo once done? 
 - [ ] `.mcp.json` has `EXA_API_KEY` placeholder — wire to env var or prompt in `set-git-identity.sh`
 - [ ] add `shellcheck` / `shfmt` to install or as a prek hook (CLAUDE.md mandates them)
+
+
+## Errors encountered while using latest droplet
+
+### Improve `install.sh`
+which we wanna fix in next install.sh iterations or other bash scripts. 
+
+- need to use node 22.13 minimum to install and use `pnpm`
+- `npm install -g pnpm`
+- then can install `node_modules` of codebase with `pnpm`
+
+### Project-scoped `.claude/settings.json`
+claude in repo without its own settings json asks to edit without even suggesting to allow for this session. plan a template for project-scoped `.claude/settings.json` derived from use user-level ones (this repo's `./.claude/settings.json)`. It should minimise interuptions while respecting our threat model / use case. 
+
+### add packages
+- npm-check-updates
+- nvm
+- bun
+
+### Droplet size too small
+
+`/read-codebase` command makes the connection drop
+as well as `pnpm start` on a CRA app
+
+#### Claude suggestions (verify)
+
+One small thing: 25.10 is a non-LTS interim release (supported only 9 months, until July 2026). For a dev sandbox that's fine, but if you want stability and don't want to rebuild snapshots when support ends, switch your dropkit config to `ubuntu-24-04-x64` (LTS, supported until 2029). Refs: Ubuntu release schedule, VS Code Remote-SSH requirements.
+
+Why pnpm start is killing your connection
+Yes, almost certainly the cause. And it's not really an SSH problem, it's a RAM problem masquerading as an SSH problem. Here's what's happening on 2 GB:
+
+VS Code Remote-SSH server: ~300-500 MB
+Claude Code (Node process): ~200-400 MB
+pnpm start (likely Vite/Next/whatever dev server + esbuild/swc workers): 800 MB to 1.5 GB easily
+The kernel, sshd, tailscaled, your shell: ~200 MB
+
+VSCode settings.json
+```
+{
+  ...
+  "remote.SSH.connectTimeout": 60,
+  "remote.SSH.serverInstallLockTimeout": 120,
+  "remote.SSH.useLocalServer": true,
+  "remote.SSH.lockfilesInTmp": true,
+}
+```
+
+`~/.ssh/config`
+Host dropkit.*
+  ServerAliveInterval 30
+  ServerAliveCountMax 6
+  TCPKeepAlive yes
