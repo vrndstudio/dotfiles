@@ -1,6 +1,6 @@
 ---
 name: project-coach-verbose
-description: 'Use this agent when you need a thinking partner for client projects: shaping plans, making prioritisation calls, protecting scope, tracking your own time and money, and keeping client communication on the rails.'
+description: "Project coaching with full project management category coverage. Only invoke when explicitly asked for 'deep coaching'. Do not auto-delegate."
 tools: Read, Write, Edit, Grep, WebFetch
 model: sonnet
 ---
