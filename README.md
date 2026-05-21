@@ -1,10 +1,10 @@
 # Dropkit Starter CC
 
-This starter copies user configs & preferred tools to the root of a Digital Ocean droplet setup following the [Trail of Bits' Dropkit](https://github.com/trailofbits/dropkit) repo. 
+This starter copies user configs & preferred tools to the root of a Digital Ocean droplet setup following the [Trail of Bits' Dropkit](https://github.com/trailofbits/dropkit) repo.
 
 ## Installation
 
-Follow [dropkit setup steps](https://github.com/trailofbits/dropkit#installation). 
+Follow [dropkit setup steps](https://github.com/trailofbits/dropkit#installation).
 
 Recommended minimum settings for new droplets:
 
@@ -12,6 +12,7 @@ Recommended minimum settings for new droplets:
 Size:       s-2vcpu-4gb
 Image:      ubuntu-24-04-x64             # supported til 2029
 ```
+
 ### Workflow
 
 ```bash
@@ -28,13 +29,19 @@ dropkit destroy <name>     # done
 ```shell
 tailscale status
 tailscale ping <droplet>
+
 dropkit off <droplet>    # if ip address differs from tailscale's
 dropkit on <droplet>
+
 dropkit enable-tailscale <droplet>
+
+# after waking, if remote host identification has changed
+ssh-kegen -R 100.103... # whatever IP the warning showed
 ```
 
 ### Clone this starter
-Most dotfiles and defaults in this repo draw from Trail of Bit's [claude-code-config](https://github.com/trailofbits/claude-code-config/tree/main). 
+
+Most dotfiles and defaults in this repo draw from Trail of Bit's [claude-code-config](https://github.com/trailofbits/claude-code-config/tree/main).
 
 Once entered `ssh dropkit.<droplet>`, clone this template repo or adapt yours.
 
@@ -51,6 +58,7 @@ git clone https://github.com/vrndstudio/dropkit-starter-cc.git && cd dropkit-sta
 ```
 
 Installs:
+
 - System: `nodejs`, `npm`, `ripgrep`, `fzf`, `jq`, `tmux`, `bubblewrap`, `socat`
 - Node global: `@anthropic-ai/claude-code`, corepack (pnpm/yarn on demand)
 - Shell: oh-my-zsh + `zsh-autosuggestions` + `zsh-syntax-highlighting`; sets zsh as login shell
@@ -88,10 +96,30 @@ git remote set-url origin https://github.com/you/repo.git   # strip token from s
 unset GH_TOKEN
 ```
 
-## Development 
+### Pasting multiple files from own file system
+
+Just drag drop files into the vscode files explorer
+
+## Development
+
+### Maintenance
+
+```bash
+apt list --upgradable
+sudo apt update
+sudo apt upgrade -y
+```
+
+remove ophanated deps
+
+### Know issues
+
+- difficulty running 2 parallel claude sessions
+- laggy commands sometimes
+- only way to copy directories is pushing them as public repos?
 
 ### Next Steps
 
 - [ ] Test against threats (described in [CLAUDE.md](./CLAUDE.md))
-- [ ] add step to delete this starter once `install.sh` is complete? 
-
+- [ ] dig into https://github.com/trailofbits/claude-code-config#usage for suggested usage
+- [ ] add step to delete this starter once `install.sh` is complete?
