@@ -21,7 +21,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "bash \"~/.claude/statusline.sh\""
+    "command": "bash ~/.claude/statusline.sh"
   },
   "permissions": {
     "allowedTools": ["Read", "Write"],
@@ -39,6 +39,8 @@
       "Bash(cp *)",
       "Bash(mv *)",
       "Bash(rm *)",
+      "Bash(sleep *)",
+      "Bash(echo *)",
 
       "Bash(git add:*)",
       "Bash(git commit:*)",
@@ -49,12 +51,34 @@
       "Bash(git fetch:*)",
       "Bash(git config:*)",
       "Bash(git switch *)",
+      "Bash(git push)",
+      "Bash(git push origin)",
+      "Bash(git push -u origin *)",
+      "Bash(git push origin HEAD*)",
+      "Bash(git checkout -b *)",
+      "Bash(git switch -c *)",
+      "Bash(git branch *)",
+      "Bash(git merge --no-ff *)",
+      "Bash(git merge *)",
 
       "Bash(pnpm add *)",
       "Bash(pnpm remove *)",
-      "Bash(pnpm run *)",
       "Bash(pnpm exec *)",
-      "Bash(npx *)"
+      "Bash(npx *)",
+      "Bash(pnpm test*)",
+      "Bash(pnpm build*)",
+      "Bash(pnpm dlx *)",
+      "Bash(node *)",
+      "Bash(bun *)",
+
+      "Bash(curl http://localhost:*)",
+      "Bash(curl -s http://localhost:*)",
+      "Bash(curl -sS http://localhost:*)",
+      "Bash(curl -i http://localhost:*)",
+      "Bash(curl http://127.0.0.1:*)",
+      "Bash(curl -s http://127.0.0.1:*)",
+      "mcp__exa__web_search_exa",
+      "mcp__exa__web_fetch_exa"
     ],
     "deny": [
       "Write(production.*)",
@@ -105,14 +129,18 @@
 
       "Bash(git push --force*)",
       "Bash(git push *--force*)",
-      "Bash(git reset --hard*)"
+      "Bash(git reset --hard*)",
+
+      "WebFetch",
+      "WebSearch"
     ],
     "ask": [
       "Bash(git push *)",
       "Bash(git branch -D *)",
-      "Bash(git checkout *)",
-      "Bash(git merge *)",
-      "Bash(git branch *)"
+      "Bash(git checkout main*)",
+      "Bash(git checkout master*)",
+      "Bash(curl *github.com*)",
+      "Bash(curl *raw.githubusercontent.com*)"
     ]
   },
 
